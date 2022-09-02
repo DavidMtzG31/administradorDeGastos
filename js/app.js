@@ -25,7 +25,6 @@ class Presupuesto {
 
 
     nuevoGasto(gasto) {
-        this.cargaLocal();
         this.gastos = [...this.gastos, gasto];
         this.toLocal();
         this.calcularRestante();
