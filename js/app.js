@@ -11,8 +11,6 @@ function eventListeners() {
     document.addEventListener('DOMContentLoaded', preguntarPresupuesto)
 
     formulario.addEventListener('submit', agregarGasto);
-
-
 }
 
 
@@ -25,8 +23,10 @@ class Presupuesto {
         this.gastos = [];
     }
 
+
     nuevoGasto(gasto) {
-        this.gastos =[...this.gastos, gasto];
+        this.gastos = [...this.gastos, gasto];
+        this.toLocal();
         this.calcularRestante();
     }
 
@@ -41,14 +41,20 @@ class Presupuesto {
     eliminarGasto(id) {
         this.gastos = this.gastos.filter( gasto => gasto.id !== id );  // Quita el elemento que estamos eliminando del arreglo
         this.calcularRestante();
+        this.toLocal();
+    }
+
+    toLocal() {
+        localStorage.setItem('gasto', JSON.stringify(this.gastos))
     }
 }
+
+
 
 // Serán Métodos para imprimir HTML basados en la clase de Presupuestos
 class UI {
     insertarPresupuesto(cantidad) {
         const {presupuesto, restante} = cantidad ; // Destructuring de los valores
-
         // Agregando al HTML
         document.querySelector('#total').textContent = presupuesto;
         document.querySelector('#restante').textContent = restante;
@@ -77,7 +83,6 @@ class UI {
     }
 
     agregarGastosListados(gastos) {
-
         this.limpiarHTML();
 
         // Iterar sobre los gastos
@@ -145,6 +150,12 @@ class UI {
             formulario.querySelector('button[type="submit"]').disabled = true;
         }
     }
+
+    restLocal() {
+        gastos = JSON.parse(localStorage.getItem('gasto')) || [];
+        console.log(gastos)
+        ui.agregarGastosListados(gastos);
+    }
 }
 // Instanciando UI de forma global para poderlo llamar en cualquier función o cualquier parte 
 const ui = new UI();
@@ -158,6 +169,7 @@ let presupuesto;
 
 // Ventana flotante que pregunta el presupuesto
 function preguntarPresupuesto() { 
+    ui.restLocal()
     const presupuestoUsuario = prompt('¿Cuál es tu presupuesto?');
     if(presupuestoUsuario === '' || presupuestoUsuario === null || isNaN(presupuestoUsuario) || presupuestoUsuario <= 0 ) {  // isNan es para validar que no se tecleen letras
         window.location.reload();   // Va a recargar la página actual en caso de tener un string vacío en presupuesto
@@ -222,4 +234,9 @@ function eliminarGasto(id) {
     ui.actualizarRestante(restante);
 
     ui.comprobarPresupuesto(presupuesto);
+}
+
+
+function cargaLocal() {
+    console.log('Desde la clase Presupuesto');
 }
