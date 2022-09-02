@@ -232,7 +232,7 @@ function eliminarGasto(id) {
 }
 
 function restLocal() {
-    gastos = JSON.parse(localStorage.getItem('gasto')) || [];
+    this.gastos = JSON.parse(localStorage.getItem('gasto')) || [];
     console.log(gastos)
     ui.agregarGastosListados(gastos);
 }
