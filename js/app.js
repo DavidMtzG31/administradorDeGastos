@@ -25,6 +25,7 @@ class Presupuesto {
 
 
     nuevoGasto(gasto) {
+        this.cargaLocal();
         this.gastos = [...this.gastos, gasto];
         this.toLocal();
         this.calcularRestante();
@@ -46,6 +47,12 @@ class Presupuesto {
 
     toLocal() {
         localStorage.setItem('gasto', JSON.stringify(this.gastos))
+    }
+
+    restLocal() {
+        document.addEventListener('DOMContentLoaded', this.restLocal() )
+        this.gastos = JSON.parse(localStorage.getItem('gasto')) || [];
+        console.log(this.gastos)
     }
 }
 
@@ -150,12 +157,6 @@ class UI {
             formulario.querySelector('button[type="submit"]').disabled = true;
         }
     }
-
-    restLocal() {
-        gastos = JSON.parse(localStorage.getItem('gasto')) || [];
-        console.log(gastos)
-        ui.agregarGastosListados(gastos);
-    }
 }
 // Instanciando UI de forma global para poderlo llamar en cualquier función o cualquier parte 
 const ui = new UI();
@@ -168,8 +169,7 @@ let presupuesto;
 /* FUNCIONES */
 
 // Ventana flotante que pregunta el presupuesto
-function preguntarPresupuesto() { 
-    ui.restLocal()
+function preguntarPresupuesto() {
     const presupuestoUsuario = prompt('¿Cuál es tu presupuesto?');
     if(presupuestoUsuario === '' || presupuestoUsuario === null || isNaN(presupuestoUsuario) || presupuestoUsuario <= 0 ) {  // isNan es para validar que no se tecleen letras
         window.location.reload();   // Va a recargar la página actual en caso de tener un string vacío en presupuesto
@@ -236,7 +236,6 @@ function eliminarGasto(id) {
     ui.comprobarPresupuesto(presupuesto);
 }
 
-
-function cargaLocal() {
-    console.log('Desde la clase Presupuesto');
+function fexterna() {
+    console.log('Cargando desde fuera');
 }
