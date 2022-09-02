@@ -47,13 +47,8 @@ class Presupuesto {
     toLocal() {
         localStorage.setItem('gasto', JSON.stringify(this.gastos))
     }
-
-    restLocal() {
-        document.addEventListener('DOMContentLoaded', this.restLocal() )
-        this.gastos = JSON.parse(localStorage.getItem('gasto')) || [];
-        console.log(this.gastos)
-    }
 }
+
 
 
 
@@ -179,6 +174,7 @@ function preguntarPresupuesto() {
 
     ui.insertarPresupuesto(presupuesto);
     // console.log(presupuesto);
+    restLocal()
 }
 
 // Añade gastos
@@ -235,6 +231,8 @@ function eliminarGasto(id) {
     ui.comprobarPresupuesto(presupuesto);
 }
 
-function fexterna() {
-    console.log('Cargando desde fuera');
+function restLocal() {
+    gastos = JSON.parse(localStorage.getItem('gasto')) || [];
+    console.log(gastos)
+    ui.agregarGastosListados(gastos);
 }
